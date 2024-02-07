@@ -1,0 +1,79 @@
+<p>注文詳細</p>
+<table>
+  <tr>
+    <td>注文日</td>
+    <td><%= @order.created_at %></td>
+  </tr>
+  <tr>
+    <td>配送先</td>
+    <td>
+      〒<%= @order.postal_code %>
+      <%= @order.address %>
+      <%= @order.name %>
+    </td>
+  </tr>
+  <tr>
+    <td>支払方法</td>
+    <td>
+      <% if @order.payment_method? %>
+        <% @order.payment_method == 0 %>
+        <%= Order.payment_methods_i18n[:credit_card] %>
+      <% elsif @order.payment_method == 1 %>
+        <% @order.payment_method == 1 %>
+        <%= Order.payment_methods_i18n[:transfer] %>
+      <% end %>
+    </td>
+  </tr>
+  <td>ステータス</td>
+  <td>
+    <% if @order.status == "wait_paymethod" %>
+      <%= Order.statuses_i18n[:wait_paymethod] %>
+    <% elsif @order.status == "confirm_paymethod" %>
+      <%= Order.statuses_i18n[:confirm_paymethod] %>
+    <% elsif @order.status == "making" %>
+      <%= Order.statuses_i18n[:making] %>
+    <% elsif @order.status == "preparing_ship" %>
+      <%= Order.statuses_i18n[:preparing_ship] %>
+    <% elsif @order.status == "finish_prepare" %>
+      <%= Order.statuses_i18n[:finish_prepare] %>
+    <% end %>
+  </td>
+</table>
+
+<p>請求情報</p>
+<table>
+  <tr>
+    <td>商品合計</td>
+    <td><%= @order.invoice_amount - 800 %></td>
+  </tr>
+  <tr>
+    <td>配送料</td>
+    <td>800</td>
+  </tr>
+  <tr>
+    <td>ご請求額</td>
+    <td><%= @order.invoice_amount %> </td>
+  </tr>
+</table>
+
+<p>注文内容</p>
+<table>
+  <thead>
+  <tr>
+    <th>商品</th>
+    <th>単価（税込）</th>
+    <th>個数</th>
+    <th>小計</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @order_items.each do |order_item| %>
+  <tr>
+    <td><%= order_item.item.name %></td>
+    <td><%= order_item.item.with_tax_price %></td>
+    <td><%= order_item.amount %></td>
+    <td><%= order_item.subtotal %></td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,33 @@
+<h2>商品編集</h2>
+<%= form_with model: @item,url:admin_item_path do |f| %>
+<div>
+  <span>商品画像</span>
+  <span><%= f.file_field :image, accept: "image/*", placeholder:"選択されていません" %></span>
+</div>
+<div>
+  <span>商品名</span>
+  <span><%= f.text_field :name, class: "form-control" %></span>
+</div>
+<div>
+  <span>商品説明</span>
+  <span><%= f.text_area :introduction, class: "form-control",placeholder:"ここに説明文を記述します" %></span>
+</div>
+<div>
+  <span>ジャンル</span>
+  <span><%= f.select :genre_id, options_from_collection_for_select(Genre.all, :id, :name) %></span>
+</div>
+<div>
+  <span>税抜価格</span>
+  <span><%= f.text_field :price, class: "form-control",placeholder:"1000" %></span>
+</div>
+<div>
+  <span>販売ステータス</span>
+  <span>
+    <%= f.radio_button :is_status, Item.is_statuses.key(0) %>
+    <%= f.label :is_status_sale, Item.is_statuses_i18n[:sale] %>
+    <%= f.radio_button :is_status, Item.is_statuses.key(1) %>
+    <%= f.label :is_status_stopped, Item.is_statuses_i18n[:stopped] %>
+  </span>
+</div>
+<%= f.submit "変更を保存", class: "btn btn-secondary" %>
+<% end %>

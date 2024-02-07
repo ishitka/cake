@@ -1,0 +1,40 @@
+<div class="container-fluid" style="height: 600px;">
+  <div class="row mt-5">
+    <div class="col-2 mt-4 ml-5">
+      <div class="border border-dark">
+        <p class="text-center m-auto border-bottom border-dark">ジャンル検索</p>
+        <div class="d-flex flex-column ml-3">
+          <% @genres.each do |genre| %>
+            <%= link_to genre.name, items_path(genre_name: genre.name) %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  
+    <div class="d-flex flex-column">
+      <h2>
+        <% if params[:genre_name] %>
+          <% selected_genres = @genres.pluck(:name) %>
+          <% if selected_genres.present? %>
+           <%= selected_genres.join(', ') %>一覧
+          <% else %>
+            商品一覧（全<%= @items.count %>件)
+          <% end %>
+        <% else %>
+          商品一覧（全<%= @items.count %>件)
+        <% end %>
+      </h2>
+  
+      <div class="row row-cols-4">
+        <% @items.each do |item| %>
+          <div class="col">
+            <%= link_to (image_tag item.image,size: "100×100"), item_path(item.id) %></br>
+            <%= item.name %></br>
+            ¥<%= item.with_tax_price %>
+          </div>
+        <% end %>
+        <%= paginate @items %>
+      </div>
+    </div>
+  </div>
+</div>

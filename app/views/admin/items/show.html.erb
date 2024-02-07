@@ -1,0 +1,32 @@
+<h2>商品詳細</h2>
+<span><%= image_tag @item.image, size: "100×100" %></span>
+<span>
+  <div>
+    <span>商品名</span>
+    <span><%= @item.name %></span>
+  </div>
+  <div>
+    <span>商品説明</span>
+    <span><%= @item.introduction %></span>
+  </div>
+  <div>
+    <span>ジャンル</span>
+    <span><%= @item.genre.name %></span>
+  </div>
+  <div>
+    <span>税込価格<br>（税抜価格）</span>
+    <span><%= @item.with_tax_price %>(<%= @item.price %>)円</span>
+  </div>
+  <div>
+    <span>販売ステータス</span>
+    <span>
+      <% if @item.is_status == Item.is_statuses.key(0) %>
+        <%= Item.is_statuses_i18n[:sale] %>
+      <% elsif @item.is_status == Item.is_statuses.key(1) %>
+        <%= Item.is_statuses_i18n[:stopped] %>
+      <% end %>
+    </span>
+  </div>
+</span>
+
+<%= link_to "編集する", edit_admin_item_path(@item.id) %>

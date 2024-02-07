@@ -1,0 +1,30 @@
+<div class="container-fluid" style="height: 600px;">
+  <div class="row mt-5">
+    <div class="col-2 mt-4 ml-5">
+      <div class="border border-dark">
+        <p class="text-center m-auto border-bottom border-dark">ジャンル検索</p>
+        <div class="d-flex flex-column ml-3">
+          <% @genres.each do |genre| %>
+            <%= link_to genre.name, items_path(genre_name: genre.name) %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-2 mr-3">
+      <%= image_tag @item.image, size: "100×100" %>
+    </div>
+    <div class="col-7">
+      <h4><%= @item.name %></h4>
+      <%= @item.introduction %></br>
+      <div class="mt-5">¥<%= (@item.with_tax_price).floor %>(税込)</div>
+      <%= form_with model: @cart_item,url: cart_items_path, local:true do |f| %>
+        <div class="mt-4">
+        <%= f.hidden_field :item_id, :value => @item.id %>
+        <%= f.hidden_field :customer_id, value: current_customer.id %>
+        <%= f.select :amount, *[1..10] %>
+        <%= f.submit "カートに入れる", class: "btn btn-success ml-4" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

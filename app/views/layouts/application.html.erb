@@ -2,15 +2,101 @@
 <html>
   <head>
     <title>Cake</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="d-flex flex-column my-2 ml-4 mb-0 col-11" style="height: 100%;">
+    <header class="border border-dark">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid progress" style="height: 130px">
+          <a class="navbar-brand p-3 border border-dark">LOGO</a>
+          <div class="collapse navbar-collapse">
+          <% if customer_signed_in? %>
+            <div class="d-flex flex-column ml-auto">
+              <div>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <%= link_to "マイページ", customer_path(current_customer) %>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <%= link_to "商品一覧", items_path %>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <a href="/cart_items">カート</a>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <%= link_to "ログアウト", destroy_customer_session_path, method: :delete %>
+                </button>
+              </div>
+              <div class="mt-3 ml-5">
+                <%= form_with url: items_path, method: :get do |f| %>
+                  <%= f.text_field :name %>
+                  <%= f.submit"検索" %>
+                <% end %>
+              </div>
+            </div>
+          <% elsif admin_signed_in? %>
+            <div class="d-flex flex-column ml-auto">
+              <div>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <a href="/admin/items">商品一覧</a>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <a href="/admin/customers">会員一覧></a>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <a href="/admin/admin">注文履歴一覧</a>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <%= link_to "ジャンル一覧", admin_genres_path %>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" type="button">
+                  <%= link_to "ログアウト", destroy_admin_session_path, method: :delete %>
+                </button>
+                <div class="mt-3 ml-5">
+                  <%= form_with url: items_path, method: :get do |f| %>
+                    <%= f.text_field :name %>
+                    <%= f.submit"検索" %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% else %>
+            <div class="d-flex flex-column ml-auto">
+              <div>
+                <button class="btn btn-sm btn-outline-secondary mr-4" type="button">
+                  <a href="/about">About</a>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary mr-4" type="button">
+                  <a href="/items">商品一覧</a>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary mr-4" type="button">
+                  <a href="/customers/sign_up">新規登録</a>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary mr-4" type="button">
+                  <a href="/customers/sign_in">ログイン</a>
+                </button>
+                <div class="mt-3 ml-5">
+                <%= form_with url: items_path, method: :get do |f| %>
+                  <%= f.text_field :name %>
+                  <%= f.submit"検索" %>
+                <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="border border-dark">
     <%= yield %>
+    </main>
+    <footer class="text-ahite pt-5 pb-4 border border-dark">
+    </footer>
   </body>
 </html>

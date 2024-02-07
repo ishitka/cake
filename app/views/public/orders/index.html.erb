@@ -1,0 +1,44 @@
+<h2>注文履歴一覧</h2>
+<table>
+  <thead>
+    <tr>
+      <th>注文日</th>
+      <th>配送先</th>
+      <th>注文商品</th>
+      <th>支払金額</th>
+      <th>ステータス</th>
+      <th>注文詳細</th>
+    </tr>
+  </thead>
+  <% @orders.each do |order| %>
+  <tbody>
+    <tr>
+      <td><%= order.created_at %></td>
+      <td>〒<%= order.postal_code %></dr>
+          <%= order.address %></dr>
+          <%= order.name %>
+      </td>
+      <td>
+        <% order.order_items.each do |order_item| %>
+          <% item = Item.find(order_item.item_id) %>
+          <%= item.name %>
+        <% end %>
+      </td>
+      <td><%= order.invoice_amount %></td>
+      <td><% if order.status == "wait_paymethod" %>
+            <%= Order.statuses_i18n[:wait_paymethod] %>
+          <% elsif order.status == "confirm_paymethod" %>
+            <%= Order.statuses_i18n[:confirm_paymethod] %>
+          <% elsif order.status == "making" %>
+            <%= Order.statuses_i18n[:making] %>
+          <% elsif order.status == "preparing_ship" %>
+            <%= Order.statuses_i18n[:preparing_ship] %>
+          <% elsif order.status == "finish_prepare" %>
+            <%= Order.statuses_i18n[:finish_prepare] %>
+          <% end %>
+      </td>
+      <td><%= link_to "表示する", order_path(order.id) %></td>
+    </tr>
+  </tbody>
+  <% end %>
+</table>

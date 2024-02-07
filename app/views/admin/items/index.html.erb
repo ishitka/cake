@@ -1,0 +1,34 @@
+<h2>商品一覧</h2>
+<%= link_to "商品新規登録", new_admin_item_path %>
+<table class="table table-hover table-inverse">
+  <thead>
+    <tr>
+      <th class="text-start">商品ID</th>
+      <th class="text-start">商品名</th>
+      <th class="text-start">税抜価格</th>
+      <th class="text-start">ジャンル</th>
+      <th class="text-start">ステータス</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+    <tr>
+      <td class="text-start"><%= item.id %></td>
+      <td class="text-start"><%= link_to item.name , admin_item_path(item.id) %></td>
+      <td class="text-start"><%= item.price %></td>
+      <td class="text-start"><%= item.genre.name %></td>
+      <td class="text-start">
+        <% if item.is_status == Item.is_statuses.key(0) %>
+          <%= Item.is_statuses_i18n[:sale] %>
+        <% elsif item.is_status == Item.is_statuses.key(1) %>
+          <%= Item.is_statuses_i18n[:stopped] %>
+        <% end %>
+      </td>
+      <td><%= link_to "削除", admin_item_path(item.id), method: :delete %></td>
+    </tr>
+  <% end %>
+  <%= paginate @items %>
+  </tbody>
+</table>
+
+
